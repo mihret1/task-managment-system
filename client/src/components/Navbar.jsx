@@ -10,11 +10,11 @@ const Navbar=()=>{
             <a href="/" className="text-semibold text-xl pb-5"> Task Managment System </a>
             <div className="flex gap-3 items-center">
              
-               <a href="/"className="flex justify-center items-center bg-green-800 font-semibold px-4 h-9 w-24 text-white text-lg">Create</a>
+               <a href="/createproject"className="flex justify-center items-center bg-green-800 font-semibold px-4 h-9 w-24 text-white text-lg">Create</a>
  
                 <span className="text-xl">Mihiret Desalegn</span>
              
-                <a href="/" className="flex justify-center items-center text-lg font-semibold bg-green-800 px-5 h-9 w-24 text-white">Signup</a>
+                <a href="/auth" className="flex justify-center items-center text-lg font-semibold bg-green-800 px-5 h-9 w-24 text-white">Signup</a>
                 <span className="text-lg">notification</span>
             </div>
         </div>

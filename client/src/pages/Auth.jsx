@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
+
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
+
+
+
 function Auth() {
   const [name,setName]=useState('')
   const [email,setEmail]=useState('')
@@ -11,6 +16,20 @@ function Auth() {
   const [errors,setError]=useState(false)
   const [errorMessage,setErrorMessage]=useState('')
   const navigate=useNavigate()
+
+  useEffect(()=>{
+    const token=localStorage.getItem('token')
+    if(token){
+      try{
+        const decode=jwtDecode(token)
+        if(decode){
+          navigate('/')
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
+  },[navigate])
 
   const Signup=async(e)=>{
     e.preventDefault()
@@ -30,7 +49,7 @@ function Auth() {
         setError(false)
         setErrorMessage('')
         console.log(data)
-        navigate('/')
+        navigate('/',{replace:true})
       }catch(error){
         setError(true)
         setErrorMessage(error.response.data)
@@ -56,7 +75,7 @@ function Auth() {
         setError(false)
         setErrorMessage('')
         console.log(data)
-        navigate('/')
+        navigate('/',{replace:true})
       }catch(error){
         setError(true)
         setErrorMessage(error.response.data)
