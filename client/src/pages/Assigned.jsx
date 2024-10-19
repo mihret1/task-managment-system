@@ -1,8 +1,15 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
 
 function Assigned() {
   return (
-    <div>Assigned</div>
+    <div>
+      <div>
+        <Navbar />
+      </div>
+      <div> Assigned</div>
+     
+      </div>
   )
 }
 

@@ -7,7 +7,7 @@ const Navbar=()=>{
     return(
     <div className="flex flex-col h-[150px] bg-black  text-white py-4 px-5 justify-between">
         <div className="flex justify-between">
-            <div className="text-semibold text-xl pb-5"> Task Managment System </div>
+            <a href="/" className="text-semibold text-xl pb-5"> Task Managment System </a>
             <div className="flex gap-3 items-center">
              
                <a href="/"className="flex justify-center items-center bg-green-800 font-semibold px-4 h-9 w-24 text-white text-lg">Create</a>

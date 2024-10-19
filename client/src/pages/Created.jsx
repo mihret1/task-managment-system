@@ -1,8 +1,15 @@
 import React from 'react'
 
+import Navbar from '../components/Navbar'
 function Created() {
   return (
-    <div>Created</div>
+    <div>
+    <div>
+      <Navbar />
+    </div>
+    <div> created</div>
+   
+    </div>
   )
 }
 

@@ -4,6 +4,8 @@ const mongoose=require('mongoose')
 const cors=require('cors')
 const app=express()
 const URL='mongodb://localhost/task_managment_system'
+const projectRoute=require('./src/routes/project')
+const userRoute=require('./src/routes/user')
 
 require('dotenv').config()
 const PORT=process.env.PORT || 4000
@@ -12,6 +14,8 @@ const PORT=process.env.PORT || 4000
 app.use(cors())
 app.use(express.json())
 app.get('/',(req,res)=>{res.send('hello')})
+app.use('/',projectRoute)
+app.use('/user',userRoute)
 
 mongoose.connect(URL)
         .then(()=>{

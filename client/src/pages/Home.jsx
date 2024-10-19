@@ -6,6 +6,7 @@ import img3 from '../assets/ke.jpg'
 import img4 from '../assets/new.jpg'
 import img5 from '../assets/img1.jpg'
 import img6 from '../assets/img2.jpg'
+import Navbar from '../components/Navbar'
 
 function Home() {
   const CardOne=(props)=>{
@@ -24,7 +25,10 @@ function Home() {
     )
   }
   return (
-    <div className='grid grid-cols-3 gap-x-4 gap-y-16 px-10 py-4'>
+    <div>
+       <Navbar />
+
+      <div className='grid grid-cols-3 gap-x-4 gap-y-16 px-10 py-4'>
           <CardOne  imgg={img1}
               title='Guzo Mobile App'
                desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,'
@@ -57,6 +61,8 @@ function Home() {
                deadline='4/23/2024'/>             
 
     </div>
+    </div>
+    
   )
 }
 
