@@ -10,11 +10,10 @@ const taskSchema=new mongoose.Schema({
           },
         desc:String,
         deadline:Date,
-        status: {
-            type: String,
-            enum: ['pending', 'in-progress', 'completed'],
-            default:'pending'
-          },
+        status:{
+            type:Number,
+            default:0
+        },
           issues: {
             type: [String],  
             default: []
@@ -28,10 +27,12 @@ const projectSchema= new mongoose.Schema({
     desc:String,
     projectImage:String,
     deadline:Date,
-    status:{
-        type:Number,
+    startDate:Date,
+    status: {
+        type: String,
         default:0
-    },
+      },
+      
     projectIssue:{
             type:[String],
             default:[]

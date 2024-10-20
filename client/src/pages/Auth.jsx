@@ -87,9 +87,10 @@ function Auth() {
   return (
     <div className='flex flex-col items-center justify-center  h-[630px] gap-3'>
       <p className='text-3xl font-bold text-cyan-500 pb-10'>Task Management System</p>
+      <form onSubmit={isSignup?Login :Signup } className='shadow-xl p-5 py-8 flex flex-col gap-2 w-[420px]'>
       <p className='text-2xl font-bold text-gray-500'>{isSignup? 'Login':'Signup'} to the System</p>
-      <form onSubmit={isSignup?Login :Signup } className='flex flex-col gap-2 w-[420px]'>
-       {!isSignup && <input className='border-2 py-2 px-2 outline-cyan-500 ' type='text' value={name} onChange={(e)=>setName(e.target.value)} placeholder='enter name...' />}        <input className='border-2 py-2 px-2 outline-cyan-500 ' type='text' value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='enter email...' />
+
+        {!isSignup && <input className='border-2 py-2 px-2 outline-cyan-500 ' type='text' value={name} onChange={(e)=>setName(e.target.value)} placeholder='enter name...' />}        <input className='border-2 py-2 px-2 outline-cyan-500 ' type='text' value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='enter email...' />
         <input className='border-2 py-2 px-2 outline-cyan-500 ' type='text' value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='enter password...'/>
         <button className='bg-cyan-500 text-xl text-white py-2 ' type='submit'>{!isSignup? 'Signup':'Login'}</button>
         {fieldControl && <p className='text-center text-red-600 text-lg'>Enter all Field</p>}

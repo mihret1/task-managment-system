@@ -1,21 +1,48 @@
-import { useState } from "react"
-
+import { useEffect, useState } from "react"
+import { jwtDecode } from 'jwt-decode'
+import {useNavigate} from 'react-router-dom'
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const Navbar=()=>{
     const [colorChange,setColorChange]=useState(1)
+    const [signedEmail,setSignedEmail]=useState('')
+    const navigate=useNavigate()
+
+
+    useEffect(()=>{
+        const token=localStorage.getItem('token')
+        if(token){
+            try{
+                const decode= jwtDecode(token)
+                if(decode){
+                    setSignedEmail(decode.email)
+    
+                    console.log(decode)
+    
+                }
+            }catch(error){
+                console.log(error)
+            }
+            
+        }
+
+    },[])
+
+   
     
     return(
     <div className="flex flex-col h-[150px] bg-black  text-white py-4 px-5 justify-between">
         <div className="flex justify-between">
             <a href="/" className="text-semibold text-xl pb-5"> Task Managment System </a>
             <div className="flex gap-3 items-center">
-             
                <a href="/createproject"className="flex justify-center items-center bg-green-800 font-semibold px-4 h-9 w-24 text-white text-lg">Create</a>
- 
-                <span className="text-xl">Mihiret Desalegn</span>
-             
-                <a href="/auth" className="flex justify-center items-center text-lg font-semibold bg-green-800 px-5 h-9 w-24 text-white">Signup</a>
-                <span className="text-lg">notification</span>
+                <span className="text-xl">{signedEmail}</span>
+                <span className="text-lg"><NotificationsIcon /></span>
+
+                <button onClick={()=>{
+                    localStorage.removeItem('token')
+                    navigate('/auth',{replace:true})
+                }} className="flex justify-center items-center text-lg font-semibold bg-green-800 px-3 h-9 w-24 text-white">Logout</button>
             </div>
         </div>
        

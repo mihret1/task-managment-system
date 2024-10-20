@@ -15,18 +15,21 @@ export default function App() {
 
   const AppWrapper=({children})=>{
     const navigate=useNavigate()
-    
+    const token=localStorage.getItem('token')
+
     useEffect(()=>{
-      const token=localStorage.getItem('token')
       if(token){
         try{
           const decode=jwtDecode(token)
-          const currentTime=Date.now()/1000
-          if(decode.exp <currentTime){
-            localStorage.removeItem('token')
-            navigate('/auth',{replace:true})
+          if(decode){
+            const currentTime=Date.now()/1000
+            if(decode.exp <currentTime){
+              localStorage.removeItem('token')
+              navigate('/auth',{replace:true})
+            }
           }
-        }catch(error){
+          
+         }catch(error){
           console.log(error)
           localStorage.removeItem('token')
           navigate('/auth',{replace:true})
@@ -38,7 +41,7 @@ export default function App() {
 
       }
         
-    },[navigate])
+    },[navigate,token])
     return(<>{children}</>)
 
   }

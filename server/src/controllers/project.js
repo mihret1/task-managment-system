@@ -8,13 +8,15 @@ const projectModel =require('../models/project')
 const createProject=async(req,res)=>{
     try{
         const fields=req.body
-        const project= await projectModel.create(fields)
+        const project= await projectModel.create({...fields,creator:req.userId})
         if(!project) return res.status(404).send('failed')
         res.status(200).json(project)
     }catch(error){
         res.status(500).json(error)
     }
 }
+
+
 
 
 const getProjects=async(req,res)=>{
@@ -28,6 +30,7 @@ const getProjects=async(req,res)=>{
     }
 
 }
+
 
 const getOneProject=async(req,res)=>{
     try{
