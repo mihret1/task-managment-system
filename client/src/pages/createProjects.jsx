@@ -7,8 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress'; // MUI Loading Spinner
 import {useNavigate} from 'react-router-dom'
-// import ChipInput from 'material-ui-chip-input';
-import Chip from '@mui/material/Chip';
+import { TextField, Chip, Box } from '@mui/material';
 
 
 function CreateProjects() {
@@ -21,12 +20,25 @@ function CreateProjects() {
     const [status,setStatus]=useState('')
     const [projectImage,setProjectImage]=useState("")
     const [ teamMembers,setTeamMembers]=useState([])
+    const [inputValue, setInputValue] = useState('');
 
     const [fieldControl,setFieldControl]=useState(false)
     const [errorr,setError]=useState(false)
     const [isLoading,setIsLoading]=useState(false)
 
     const falseDate = (date) => new Date() < date;
+
+    const handleAddTeamMember = (event) => {
+      if (event.key === 'Enter' && inputValue.trim()) {
+        setTeamMembers([...teamMembers, inputValue.trim()]);
+        setInputValue(''); // Clear input field after adding
+      }
+    };
+  
+    const handleDeleteTeamMember = (teamMemberToDelete) => {
+      setTeamMembers((members) => members.filter((member) => member !== teamMemberToDelete));
+    };
+
     const handleSubmit=async(e)=>{
         const token=localStorage.getItem('token') 
         e.preventDefault()
@@ -41,7 +53,7 @@ function CreateProjects() {
           return
         }
         try{
-          const {data}= await axios.post('http://localhost:2000/project/',{title,desc,deadline,startDate,status,projectImage},{
+          const {data}= await axios.post('http://localhost:2000/project/',{title,desc,deadline,startDate,status,projectImage,teamMembers},{
             headers:{Authorization:`Bearer ${token}`}
           })
           console.log(data)
@@ -113,6 +125,38 @@ function CreateProjects() {
                 <input value={status} onChange={(e)=>setStatus(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='add status in from 100%'/>
 
               </div>            
+              
+              <div className='flex flex-col gap-1'>
+              <span className='text-lg font-semibold  '>Add Team Members:</span>  
+
+                <Box className='w-full'>
+                    <TextField
+                     className='w-full '
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      onKeyDown={handleAddTeamMember}
+                      variant="outlined"
+                      placeholder='add team member'
+                      sx={{
+                        border: '2px solid #16a34a', 
+                        outline: 'none',
+                        '&:focus-within': {
+                          outline: '2px solid #06b6d4',
+                        },
+                      }}
+                    />
+                    <Box mt={2}>
+                      {teamMembers.map((member, index) => (
+                        <Chip
+                          key={index}
+                          label={member}
+                          onDelete={() => handleDeleteTeamMember(member)}
+                          sx={{ marginRight: 1, marginBottom: 1 }}
+                        />
+                      ))}
+                    </Box>
+                </Box>
+              </div> 
               <div className='flex flex-col gap-1'>
                   <span className='text-lg font-semibold'>Add Project Image:</span>  
                   <FileBase 
@@ -120,8 +164,7 @@ function CreateProjects() {
                     multiple={false}
                     onDone={({base64})=>setProjectImage(base64)}
                 />             
-              </div>
-             
+              </div> 
                {/* <ChipInput
                  label='tags'
                  value={teamMembers}
