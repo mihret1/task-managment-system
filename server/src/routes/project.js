@@ -14,10 +14,10 @@ router.route('/project/:id')
 
        
 
-router.get('/project/:id/task',getTasks)       
+router.get('/project/:id/task',getTasks) 
+router.post('/project/:id/task',createTask)       
 router.route('/project/:id/task/:taskId')
        .get(getOneTask)
-       .post(createTask)
        .put(updateTask)
        .delete(deleteTask)
 

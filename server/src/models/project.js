@@ -3,13 +3,13 @@ const mongoose=require('mongoose')
 
 
 const taskSchema=new mongoose.Schema({
-        taskImage:String,
         title: {
             type: String,
             required: true
           },
         desc:String,
         deadline:Date,
+        startDate:Date,
         status:{
             type:Number,
             default:0
@@ -17,7 +17,9 @@ const taskSchema=new mongoose.Schema({
           issues: {
             type: [String],  
             default: []
-  }
+        },
+        taskImage:String,
+
 },{timestamps:true})
 
 // const taskModel=mongoose.model('Task',taskSchema)

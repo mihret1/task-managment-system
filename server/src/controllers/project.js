@@ -100,7 +100,7 @@ const updatedProject=async(req,res)=>{
             if(!project) return res.status(400).send('no project')
             const task=  project.projectTasks.id(taskId)
             if (!task) return res.status(400).send('task')
-            re.status(200).json(task)
+            res.status(200).json(task)
         }catch(error){
             res.status(500).json(error)
         }
