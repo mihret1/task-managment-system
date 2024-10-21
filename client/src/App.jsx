@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import UpdateProjects from './pages/updateProjects'
+import ProjectDetailPage from './pages/ProjectDetail'
 
 
 
@@ -59,6 +60,8 @@ export default function App() {
          <Route   path='/assigned' element={<Assigned />}/>
          <Route   path='/createproject' element={<CreateProjects />}/>
          <Route   path='/updateproject/:id' element={<UpdateProjects />}/>
+         <Route   path='/projectdetail/:id' element={<ProjectDetailPage />}/>
+
 
 
        </Routes>

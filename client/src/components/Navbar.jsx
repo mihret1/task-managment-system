@@ -35,14 +35,14 @@ const Navbar=()=>{
         <div className="flex justify-between">
             <a href="/" className="text-semibold text-xl pb-5"> Task Managment System </a>
             <div className="flex gap-3 items-center">
-               <a href="/createproject"className="flex justify-center items-center bg-green-800 font-semibold px-4 h-9 w-24 text-white text-lg">Create</a>
+               <a href="/createproject"className="flex justify-center items-center bg-[#194d33] font-semibold px-4 h-9 w-24 text-white text-lg">Create</a>
                 <span className="text-xl">{signedEmail}</span>
                 <span className="text-lg"><NotificationsIcon /></span>
 
                 <button onClick={()=>{
                     localStorage.removeItem('token')
                     navigate('/auth',{replace:true})
-                }} className="flex justify-center items-center text-lg font-semibold bg-green-800 px-3 h-9 w-24 text-white">Logout</button>
+                }} className="flex justify-center items-center text-lg font-semibold bg-[#194d33] px-3 h-9 w-24 text-white">Logout</button>
             </div>
         </div>
        

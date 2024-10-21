@@ -10,10 +10,14 @@ import Navbar from '../components/Navbar'
 import axios from 'axios'
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { jwtDecode } from 'jwt-decode'
+
 
 function Home() {
   const [projects,setProject]=useState([])
   const [refresh, setRefresh] = useState(false);
+  const token=localStorage.getItem('token')
+  const decode=jwtDecode(token)
 
   useEffect(()=>{
     const getAllProjectss=async()=>{
@@ -43,7 +47,7 @@ function Home() {
     return(
       <div className=' w-[400px] shadow-lg flex flex-col  '>
             
-           <a href='/authh' className='w-full'><img src={props.imgg} className='w-full h-[220px]'/></a>
+           <a href={`/projectdetail/${props.idd}`} className='w-full'><img src={props.imgg} className='w-full h-[220px]'/></a>
            <div className='flex flex-col gap-4  p-5' >
               <p className='text-center text-xl font-semibold'>{props.title}</p>
               <p className='font-sans'>{props.desc?.slice(0, 190)}</p>
@@ -52,16 +56,19 @@ function Home() {
                   <p className='font-semibold text-gray-700'>Deadline: {props.deadline && props.deadline.slice(0, 10)}</p>
               </div>
               
-              <div className='flex justify-between '>
+             {(props.creator === decode.id) &&  <div className='flex justify-between '>
                 <button onClick={()=>handleDelete(props.idd)} className='px-2  z-10'>
                   <DeleteIcon sx={{color:'red',width:'100%'}}/> 
                 </button>
                 <a href={`/updateproject/${props.idd}`}><BorderColorIcon color='primary' /></a>
-              </div>
+              </div>}
            </div>
       </div>
     )
   }
+
+
+
   return (
     <div>
        <Navbar />
@@ -77,6 +84,7 @@ function Home() {
              progress={item.status}
              deadline={item.deadline}
              idd={item._id}
+             creator={item.creator}
              />
            ))}
 
