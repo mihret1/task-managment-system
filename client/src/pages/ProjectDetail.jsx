@@ -1,9 +1,27 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 const ProjectDetailPage=()=>{
     const [displayControl,setDisplayControl]=useState(1)
+    const [project,setProject]=useState(null)
+    const { id }=useParams()
+
+      const TaskCard=()=>{}
+    
+    useEffect(()=>{
+       const projectDetail=async()=>{
+            try{
+               const {data}= await axios.get(`http://localhost:2000/project/${id}`)
+                 setProject(data)
+            }catch(error){
+                console.log(error)
+            }
+       }
+       projectDetail()
+    },[id])
+    
     return(
     <div>
         <Navbar />
@@ -18,25 +36,25 @@ const ProjectDetailPage=()=>{
             <div className='w-3/4 px-[5%] py-8'>
                  {displayControl===1 && 
                     <div className='flex flex-col items-center'>
-                        <p className=' text-center text-2xl pb-3 font-semibold '>Web Development</p>
-                        <div className='flex justify-between w-full py-3 font-semibold'>
-                            <p className='text-lg '><span className='text-blue-500'>Start Date</span>: 1/2/2018</p>
-                            <p className='text-lg '><span className='text-red-600'>Deadline</span> : 1/2/2018</p>
+                        <p className=' text-center text-2xl pb-3 font-semibold '>{project?.title}</p>
+                        <div className='flex justify-between w-full py-4 font-semibold'>
+                            <p className='text-lg '><span className='text-blue-500'>Start Date</span>: {project?.startDate?.slice(0, 10)}</p>
+                            <p className='text-lg '><span className='text-red-600'>Deadline</span> : {project?.deadline?.slice(0, 10)}</p>
 
                         </div>
+                        <div className='flex justify-between  w-full pb-1'>
+                            <p className='text-lg font-semibold text-green-700 '>Progress : {project?.status}%</p>
+                            <p></p>
+                        </div>  
                         <p className='text-lg'>
-                        It is a long established fact that a reader will be distracted by the readable content of a
-                         page when looking at its layout. The point of using Lorem Ipsum is that it has a
-                          more-or-less normal distribution of letters, as opposed to using 
-                          Content here, content here, making it look like readable English.
-                           Many desktop publishing packages and web page editors now use Lorem 
-                           Ipsum as their default model text, and a search for lorem ipsum will 
-                           uncover many web sites still in their infancy. Various versions have evolved over the years, 
-                        sometimes by accident, sometimes on purpose (injected humour and the like).
+                          {project?.desc}
                         </p>
                     </div>
                  }
-                 {displayControl===2 && <div>Task</div>}
+                 {displayControl===2 && 
+                 <div>
+                    Task
+                </div>}
                  {displayControl===3 && <div>schedule</div>}
                  {displayControl===4 && <div>issue</div>}
                  {displayControl===5 && <div>team</div>}
