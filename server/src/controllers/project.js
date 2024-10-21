@@ -44,11 +44,13 @@ const getOneProject=async(req,res)=>{
 }
 
 
+
+
 const deleteProject=async(req,res)=>{
      try{
         const deletedProject= await projectModel.findByIdAndDelete(req.params.id)
         if(!deletedProject) return res.status(400).send('no project')
-        res.status(200).json(deletedProject)
+        res.status(200).json({msg:"deleted",deletedProject})
      }catch(error){
         res.status(500).json(error)
      }

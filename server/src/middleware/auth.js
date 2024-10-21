@@ -9,12 +9,14 @@ const auth=(req,res,next)=>{
         // const tokenn=req.header['x-access-token']
         const verfied=jwt.verify(token,'vintage')
         req.userId=verfied.id
+        next()
+    
     }catch(error){
         console.log(error)
 
 
     }
-    next()
+    
 
 }
 

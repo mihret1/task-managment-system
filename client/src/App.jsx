@@ -8,6 +8,7 @@ import Auth from './pages/Auth'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
+import UpdateProjects from './pages/updateProjects'
 
 
 
@@ -57,6 +58,8 @@ export default function App() {
          <Route   path='/created' element={<Created />}/>
          <Route   path='/assigned' element={<Assigned />}/>
          <Route   path='/createproject' element={<CreateProjects />}/>
+         <Route   path='/updateproject/:id' element={<UpdateProjects />}/>
+
 
        </Routes>
        </AppWrapper>

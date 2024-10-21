@@ -9,8 +9,10 @@ router.get('/project',getProjects)
 router.post('/project',auth,createProject)
 router.route('/project/:id')
        .get(getOneProject)
-       .delete(deleteProject)
-       .put(updatedProject)
+       .delete(auth,deleteProject)
+       .put(auth,updatedProject)
+
+       
 
 router.get('/task',getTasks)       
 router.route('/project/:id/task/:taskId')
