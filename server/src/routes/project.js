@@ -14,7 +14,7 @@ router.route('/project/:id')
 
        
 
-router.get('/task',getTasks)       
+router.get('/project/:id/task',getTasks)       
 router.route('/project/:id/task/:taskId')
        .get(getOneTask)
        .post(createTask)

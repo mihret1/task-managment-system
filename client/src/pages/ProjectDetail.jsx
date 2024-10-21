@@ -32,7 +32,7 @@ const ProjectDetailPage=()=>{
         return(
             <div className='flex flex-col p-3 gap-2   w-[330px]  bg-gray-200 rounded-lg shadow-lg'>
               <div className='flex justify-between w-full'>
-                    <span className='text-gray-500 text-lg font-semibold'>{props.title}</span>
+                    <span className='text-gray-600 font-semibold'>{props.title}</span>
                     <span><Button onClick={handleClick} color='black'><MoreHorizIcon/> </Button> </span>
                     <Popover
                         
@@ -110,36 +110,90 @@ const ProjectDetailPage=()=>{
         <Navbar />
         <div className='flex'>
 
-            <div className='flex flex-col justify-around gap-1 w-1/4 h-[500px] bg-black text-white text-xl '>
-                 <button  onClick={()=>setDisplayControl(1)} className=' p-3 h-full bg-[#194d33]'>Discription</button>
-                 <button onClick={()=>setDisplayControl(2)} className=' p-3 h-full bg-[#194d33]'>Tasks</button>
-                 <button onClick={()=>setDisplayControl(3)} className=' p-3 h-full bg-[#194d33]'>Schedule</button>
-                 <button onClick={()=>setDisplayControl(4)} className=' p-3 h-full bg-[#194d33]'>Issue</button>
-                 <button onClick={()=>setDisplayControl(5)} className=' p-3 h-full bg-[#194d33]'>Teams</button>
+            <div className='shadow-lg flex flex-col justify-around gap-1 w-1/5 h-[500px] bg-black text-white text-xl '>
+                 <div className='p-3 h-full text-center  text-lg bg-[#21573c]'>{project?.title}</div>
+                 <button  onClick={()=>setDisplayControl(1)} className=' p-3 h-full bg-[#21573c]'>Discription</button>
+                 <button onClick={()=>setDisplayControl(2)} className=' p-3 h-full bg-[#21573c]'>Tasks</button>
+                 <button onClick={()=>setDisplayControl(3)} className=' p-3 h-full bg-[#21573c]'>Schedule</button>
+                 <button onClick={()=>setDisplayControl(4)} className=' p-3 h-full bg-[#21573c]'>Issue</button>
+                 <button onClick={()=>setDisplayControl(5)} className=' p-3 h-full bg-[#21573c]'>Teams</button>
             </div>
 
-            <div className='w-3/4 px-[5%] py-8 '>
+            <div  className='w-4/5  bg-[#307854]  overflow-x-scroll overflow-y-auto h-[500px] px-6 py-4  ' style={{scrollbarWidth: 'none', msOverflowStyle: 'none', /* For IE and Edge */ }}>
                  {displayControl===1 && 
-                    <div className='flex flex-col items-center'>
-                        <p className=' text-center text-2xl pb-3 font-semibold '>{project?.title}</p>
+                    <div className='flex flex-col items-center px-[8%] py-8'>
+                        <p className=' text-center text-2xl pb-3 font-semibold text-gray-600 '>{project?.title}</p>
                         <div className='flex justify-between w-full py-4 font-semibold'>
-                            <p className='text-lg '><span className='text-blue-500'>Start Date</span>: {project?.startDate?.slice(0, 10)}</p>
-                            <p className='text-lg '><span className='text-red-600'>Deadline</span> : {project?.deadline?.slice(0, 10)}</p>
+                            <p className='text-lg text-gray-600 '><span className='text-blue-500'>Start Date</span>: {project?.startDate?.slice(0, 10)}</p>
+                            <p className='text-lg text-gray-600 '><span className='text-red-600'>Deadline</span> : {project?.deadline?.slice(0, 10)}</p>
 
                         </div>
                         <div className='flex justify-between  w-full pb-1'>
                             <p className='text-lg font-semibold text-green-700 '>Progress : {project?.status}%</p>
                             <p></p>
                         </div>  
-                        <p className='text-lg'>
+                        <p className='text-lg text-gray-600'>
                           {project?.desc}
                         </p>
                     </div>
                  }
                  
                  {displayControl===2 && 
-                 <div className='grid grid-col-3'>
+                 <div className='grid grid-cols-3 gap-x-4 gap-y-5   '>
                     <TaskCard
+                     title='Graphics design' 
+                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
+                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+                     progress='20'
+                     startDate='2/23/2021'
+                     deadline='11/5/024'
+                     teamMemeber='Mihlet2@gmail.com'
+                     status='10'
+                     images={img1}
+                   
+                   />
+                   <TaskCard
+                     title='Graphics design' 
+                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
+                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+                     progress='20'
+                     startDate='2/23/2021'
+                     deadline='11/5/024'
+                     teamMemeber='Mihlet2@gmail.com'
+                     status='10'
+                     images={img1}
+                   
+                   />
+
+                <TaskCard
+                     title='Graphics design' 
+                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
+                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+                     progress='20'
+                     startDate='2/23/2021'
+                     deadline='11/5/024'
+                     teamMemeber='Mihlet2@gmail.com'
+                     status='10'
+                     images={img1}
+                   
+                   />
+                   <TaskCard
+                     title='Graphics design' 
+                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
+                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+                     progress='20'
+                     startDate='2/23/2021'
+                     deadline='11/5/024'
+                     teamMemeber='Mihlet2@gmail.com'
+                     status='10'
+                     images={img1}
+                   
+                   />
+                   <TaskCard
                      title='Graphics design' 
                      desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                       Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
