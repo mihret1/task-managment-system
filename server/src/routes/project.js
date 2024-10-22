@@ -13,9 +13,10 @@ router.route('/project/:id')
        .put(auth,updatedProject)
 
        
+       
 
 router.get('/project/:id/task',getTasks) 
-router.post('/project/:id/task',createTask)       
+router.post('/project/:id/task',auth,createTask)       
 router.route('/project/:id/task/:taskId')
        .get(getOneTask)
        .put(updateTask)

@@ -134,16 +134,19 @@ const updatedProject=async(req,res)=>{
             const project= await projectModel.findById(id)
             if(!project) return res.status(400).send('project not found')
 
-            const task = project.projectTasks.id(taskId) 
-            if(!task)  return res.status(400).send('task not found') 
-                
-            project.projectTasks.id(taskId).remove()
+            const taskIndex = project.projectTasks.findIndex(task => task._id.toString() === taskId);
+            if (taskIndex === -1) return res.status(400).send('Task not found');
+
+            const task = project.projectTasks[taskIndex]; 
+            project.projectTasks.splice(taskIndex, 1);
+
             await project.save()
-            if(!project) return res.status(400).send('failed tod deleted')
+            if(!project) return res.status(400).send('failed to deleted')
             res.status(200).json({msg:'this task is deleted',task})
 
+
         }catch(error){
-            res.status(500).json(error)
+            res.status(500).json(error.message)
         }
     }
 

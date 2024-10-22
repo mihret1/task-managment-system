@@ -24,6 +24,7 @@ function Home() {
       try{
         const {data}=await axios.get('http://localhost:2000/project/')
         setProject(data)
+        // console.log(data)
        }catch(error){
         console.log(error)
        }
@@ -45,12 +46,12 @@ function Home() {
 
   const CardOne=(props)=>{
     return(
-      <div className=' w-[400px] shadow-lg flex flex-col  '>
+      <div className=' w-[400px] shadow-lg flex flex-col rounded-lg '>
             
-           <a href={`/projectdetail/${props.idd}`} className='w-full'><img src={props.imgg} className='w-full h-[220px]'/></a>
+           <a href={`/projectdetail/${props.idd}`} className='w-full'><img src={props.imgg} className='w-full rounded-t-xl h-[220px]'/></a>
            <div className='flex flex-col gap-4  p-5' >
               <p className='text-center text-xl font-semibold'>{props.title}</p>
-              <p className='font-sans'>{props.desc?.slice(0, 190)}</p>
+              <p className='font-sans text-gray-600'>{props.desc?.slice(0, 190)}</p>
               <div className='flex justify-between'> 
                   <p className=' font-semibold text-gray-700'>Progress: {props.progress}%</p>
                   <p className='font-semibold text-gray-700'>Deadline: {props.deadline && props.deadline.slice(0, 10)}</p>

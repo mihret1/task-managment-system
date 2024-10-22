@@ -11,18 +11,18 @@ const taskSchema=new mongoose.Schema({
         deadline:Date,
         startDate:Date,
         status:{
-            type:Number,
-            default:0
+            type:String,
+            default:'pending'
         },
-          issues: {
-            type: [String],  
-            default: []
-        },
-        taskImage:String,
+        teamMembers:{
+          type:[String],
+          default:[]
+      },
+      taskImage:String,
 
-},{timestamps:true})
 
-// const taskModel=mongoose.model('Task',taskSchema)
+       },{timestamps:true})
+
 
 const projectSchema= new mongoose.Schema({
     title:String,
