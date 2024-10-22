@@ -16,10 +16,35 @@ const ProjectDetailPage=()=>{
     const [displayControl,setDisplayControl]=useState(1)
     const [project,setProject]=useState(null)
     const [tasks,setTasks]=useState(null)
-
+    const [refresh,setRefresh]=useState(false)
     const { id }=useParams()
     
+    useEffect(()=>{
+      const projectDetail=async()=>{
+           try{
+              const {data}= await axios.get(`http://localhost:2000/project/${id}`)
+                setProject(data)
+                setTasks(data?.projectTasks)
+               //  console.log(data?.projectTasks)
+               //  console.log(data)
+           }catch(error){
+               console.log(error)
+           }
+      }
+      projectDetail()
+   },[id,refresh])
+   
+    
+    const handleDelete=async(taskId)=>{
+      try{
+         const {data}=await axios.delete(`http://localhost:2000/project/${id}/task/${taskId}`)
+         console.log(data)
+         setRefresh((e)=>!e)
+      }catch(error){
+        console.log(error)
+      }
 
+    }
     
 
       const TaskCard=(props)=>{
@@ -53,7 +78,7 @@ const ProjectDetailPage=()=>{
                         }}
                        >
                         <div className='p-2 flex flex-col gap-2'>
-                             <span><button className='text-red-500 border-b-2 pb-2' onClick={()=>{}}>Delete</button></span>
+                             <span><button className='text-red-500 border-b-2 pb-2' onClick={()=>{handleDelete(props.taskId)}}>Delete</button></span>
                              <span><a href='/' className='text-blue-500'>Edit</a></span>
                         </div>
                     </Popover>
@@ -115,21 +140,7 @@ const ProjectDetailPage=()=>{
         )
       }
     
-    useEffect(()=>{
-       const projectDetail=async()=>{
-            try{
-               const {data}= await axios.get(`http://localhost:2000/project/${id}`)
-                 setProject(data)
-                 setTasks(data?.projectTasks)
-                //  console.log(data?.projectTasks)
-                //  console.log(data)
-            }catch(error){
-                console.log(error)
-            }
-       }
-       projectDetail()
-    },[id])
-    
+   
    
 
 
@@ -185,6 +196,7 @@ const ProjectDetailPage=()=>{
                     deadline={item.deadline}
                     teamMemeber={item.teamMembers}
                     images={item.taskImage}
+                    taskId={item._id}
 
                      />
                   ))}
