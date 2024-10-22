@@ -46,9 +46,17 @@ const projectSchema= new mongoose.Schema({
         default:[]
     },
     creator:String,
+    
       
     projectIssue:{
-            type:[String],
+            type:[{
+                desc:String,
+                status:{
+                    type:String,
+                    default:'issued',
+                    enum: ['solved', 'issued', 'pending'], 
+                        }
+                    }],
             default:[]
     },
     projectSchedule:{

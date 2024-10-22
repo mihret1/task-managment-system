@@ -9,6 +9,8 @@ import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { jwtDecode } from 'jwt-decode'
+import Groups2Icon from '@mui/icons-material/Groups2';
+
 
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,8 +23,9 @@ const ProjectDetailPage=()=>{
     const [refresh,setRefresh]=useState(false)
     const token=localStorage.getItem('token')
     const decode=jwtDecode(token)
-    const [scheduleCreate,setScheduleCreate]=useState(false)
-    
+    const [issue,setIssue]=useState({ desc:'', status: 'issued' });
+    const [projectIssue,setProjectIssue]=useState([])
+    const [addIssueButton,setAddIssueButton]=useState(false)
     const { id }=useParams()
     
     useEffect(()=>{
@@ -31,6 +34,8 @@ const ProjectDetailPage=()=>{
               const {data}= await axios.get(`http://localhost:2000/project/${id}`)
                 setProject(data)
                 setTasks(data?.projectTasks)
+                setProjectIssue(data.projectIssue)
+
                //  console.log(data?.projectTasks)
                //  console.log(data)
            }catch(error){
@@ -151,7 +156,23 @@ const ProjectDetailPage=()=>{
     
    
    
-
+   const handleAddIssue=async()=>{
+      if (issue.desc.trim() === '') return;
+       try{
+        const {data}=await axios.put(`http://localhost:2000/project/${id}`,{projectIssue:[...projectIssue,issue]},
+          {
+          headers:{Authorization:`Bearer ${token}`}
+          })
+         setProjectIssue(data.projectIssue)
+         setIssue({desc:'',status:''})
+         setRefresh((e)=>!e)
+         console.log(data)
+        
+       }catch(error){
+        console.log(error)
+       }
+ 
+   }
 
 
     return(
@@ -329,9 +350,63 @@ const ProjectDetailPage=()=>{
                  
                  }
 
+                 {displayControl===4 &&
+                   
+                   <div className='flex flex-col gap-3'>
+                        <h1 className='text-2xl font-semibold font-serif text-green-700 pb-6'>This are Issues of the Projects</h1>
+                        <button onClick={()=>setAddIssueButton((e)=>!e)} className='text-lg w-[100px] text-green-700 font-bold'>Add Issue +</button>  
+                        
+                        {addIssueButton && <div className='flex flex-col gap-2 w-[500px]'>
+                            <span className='text-lg text-gray-500 font-semibold' >Enter the Issue</span>
+                            <textarea value={issue.desc} onChange={(e)=>setIssue({...issue,desc:e.target.value})} placeholder='The issue description...' className='border p-2 border-green-600 w-[450px] h-[120px] outline-none'/>
+                            
+                            <span className='text-lg text-gray-500 font-semibold'>Enter the Issue Status</span> 
+                            <select value={issue.status} onChange={(e)=>setIssue({...issue,status:e.target.value})} className='border p-2 text-green-900 border-green-600 outline-none font-semibold w-[140px] py-2 px-2 flex justify-center'>
+                              <option value=''>Select Status</option>
+                              <option value='Issued'>Issued</option>
+                              <option value='In-Progress'>In-Progress</option>
+                              <option value='Solved'>Solved</option>
+                              <option value='Difficult'>Difficult</option>
 
-                 {displayControl===4 && <div>issue</div>}
-                 {displayControl===5 && <div>team</div>}
+
+                            </select>
+                            <button onClick={()=>handleAddIssue()} className='bg-green-700 px-2 py-1 text-white text-lg'>Add</button>
+                        </div>}
+                       
+                        <p className='text-2xl text-gray-700 pt-5 '>Here is the issue raise in this project</p> 
+                          <div>
+                                {projectIssue?.map((item,index)=>(
+                                  <div className='flex flex-col justify-between w-[800px]  border-t-2 p-3 rounded-lg' key={item.key}>
+                                     <p className='text-lg text-gray-600'>{index+1}. {item.desc}</p>
+                                      <span className={`${item.status==='In-Progress' && 'text-blue-500' } ${item.status==='Solved' && 'text-green-500' } ${item.status==='Difficult' && 'text-red-500' } ${item.status==='Issued' && 'text-yellow-500' }  p-2 w-32 font-bold `}>{item.status}</span>
+                                    </div>
+                                ))}
+                          </div> 
+                   
+                    </div>
+                  
+                  }
+
+
+                 {displayControl===5 && 
+
+                    <div>
+                          <h1 className='text-2xl font-semibold text-center pt-2 text-green-800 font-serif'>Team Member of this Project </h1>
+                          <div>
+                            <p className='text-xl pt-2 font-semibold text-gray-500'><Groups2Icon fontSize='large' sx={{ color:'green' }} /> Team Assigned</p>
+                              
+                            <div className='flex flex-col gap-1 pt-3'>
+                                  {project?.teamMembers?.map((item)=>(
+                                    <div className='text-lg font-semibold text-gray-700' key={item.key}>
+                                     - {item}
+                                    </div>
+                                    
+                                  ))}
+                            </div>
+                          </div>
+                    
+                    </div>                 
+                 }
 
             </div>
         </div>
