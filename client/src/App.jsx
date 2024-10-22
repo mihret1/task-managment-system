@@ -11,6 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import UpdateProjects from './pages/updateProjects'
 import ProjectDetailPage from './pages/ProjectDetail'
 import CreateTask from './pages/createTask'
+import UpdateTask from './pages/updateTask'
 
 
 
@@ -63,6 +64,7 @@ export default function App() {
          <Route   path='/updateproject/:id' element={<UpdateProjects />}/>
          <Route   path='/projectdetail/:id' element={<ProjectDetailPage />}/>
          <Route   path='/createtask/:id' element={<CreateTask />}/>
+         <Route   path='/project/:id/updatetask/:taskId' element={<UpdateTask />}/>
 
         
 

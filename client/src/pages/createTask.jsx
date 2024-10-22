@@ -49,11 +49,11 @@ function CreateTask() {
         setFieldControl(false)
         setIsLoading(true)
 
-        // if(!title || !desc || !deadline || !startDate || !status ){
-        //   setFieldControl(true)
-        //   setIsLoading(false)
-        //   return
-        // }
+        if(!title || !desc || !deadline || !startDate || !status ){
+          setFieldControl(true)
+          setIsLoading(false)
+          return
+        }
         
         try{
           const {data}= await axios.post(`http://localhost:2000/project/${id}/task`,{title,desc,deadline,startDate,status,taskImage,teamMembers},{

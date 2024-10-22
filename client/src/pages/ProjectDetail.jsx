@@ -17,6 +17,7 @@ const ProjectDetailPage=()=>{
     const [project,setProject]=useState(null)
     const [tasks,setTasks]=useState(null)
     const [refresh,setRefresh]=useState(false)
+    const token=localStorage.getItem('token')
     const { id }=useParams()
     
     useEffect(()=>{
@@ -37,7 +38,10 @@ const ProjectDetailPage=()=>{
     
     const handleDelete=async(taskId)=>{
       try{
-         const {data}=await axios.delete(`http://localhost:2000/project/${id}/task/${taskId}`)
+         const {data}=await axios.delete(`http://localhost:2000/project/${id}/task/${taskId}`,
+          {headers:{Authorization:`Bearer ${token}`}}
+
+         )
          console.log(data)
          setRefresh((e)=>!e)
       }catch(error){
@@ -79,7 +83,7 @@ const ProjectDetailPage=()=>{
                        >
                         <div className='p-2 flex flex-col gap-2'>
                              <span><button className='text-red-500 border-b-2 pb-2' onClick={()=>{handleDelete(props.taskId)}}>Delete</button></span>
-                             <span><a href='/' className='text-blue-500'>Edit</a></span>
+                             <span><a href={`/project/${id}/updatetask/${props.taskId}`} className='text-blue-500'>Edit</a></span>
                         </div>
                     </Popover>
               </div>

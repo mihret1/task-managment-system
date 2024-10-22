@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import FileBase from 'react-file-base64';
 import Navbar from '../components/Navbar';

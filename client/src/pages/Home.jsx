@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
 import img1 from '../assets/p1.png'
-import img2 from '../assets/p4.jpg'
-import img3 from '../assets/ke.jpg'
-import img4 from '../assets/new.jpg'
-import img5 from '../assets/img1.jpg'
-import img6 from '../assets/img2.jpg'
+
+
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -89,37 +86,14 @@ function Home() {
              />
            ))}
 
-          <CardOne  imgg={img1}
+          {/* <CardOne  imgg={img1}
               title='Guzo Mobile App'
                desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,'
                progress='30'
                deadline='4/23/2024'
-               />
-          <CardOne  imgg={img4}
-              title='Guzo Mobile App'
-               desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,'
-               progress='30'
-               deadline='4/23/2024'/>
-           <CardOne  imgg={img3}
-               title='Guzo Mobile App'
-                desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,'
-                progress='30'
-                deadline='4/23/2024'/>
-           <CardOne  imgg={img2}
-              title='Guzo Mobile App'
-               desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,'
-               progress='30'
-               deadline='4/23/2024'/>
-            <CardOne  imgg={img5}
-              title='Guzo Mobile App'
-               desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,'
-               progress='30'
-               deadline='4/23/2024'/>
-             <CardOne  imgg={img6}
-              title='Guzo Mobile App'
-               desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,'
-               progress='30'
-               deadline='4/23/2024'/>             
+               /> */}
+          
+                          
 
     </div>
     </div>

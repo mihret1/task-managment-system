@@ -19,8 +19,8 @@ router.get('/project/:id/task',getTasks)
 router.post('/project/:id/task',auth,createTask)       
 router.route('/project/:id/task/:taskId')
        .get(getOneTask)
-       .put(updateTask)
-       .delete(deleteTask)
+       .put(auth,updateTask)
+       .delete(auth,deleteTask)
 
 
 module.exports=router       

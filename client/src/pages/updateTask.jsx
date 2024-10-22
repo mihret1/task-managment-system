@@ -1,32 +1,58 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FileBase from 'react-file-base64';
 import Navbar from '../components/Navbar';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress'; // MUI Loading Spinner
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import { TextField, Chip, Box } from '@mui/material';
 
 
-function CreateProjects() {
+
+
+
+function UpdateTask() {
   const navigate=useNavigate()
+  const {id}=useParams()
+  const {taskId}=useParams()
+  const token=localStorage.getItem('token')
 
-    const [title,setTitle]=useState("")
-    const [desc,setDesc]=useState("")
-    const [deadline,setDeadline]=useState(null)
-    const [startDate,setStartDate]=useState(null)
-    const [status,setStatus]=useState('')
-    const [projectImage,setProjectImage]=useState("")
-    const [ teamMembers,setTeamMembers]=useState([])
-    const [inputValue, setInputValue] = useState('');
+  const [title,setTitle]=useState("")
+  const [desc,setDesc]=useState("")
+  const [deadline,setDeadline]=useState(null)
+  const [startDate,setStartDate]=useState(null)
+  const [status,setStatus]=useState('')
+  const [taskImage,setTaskImage]=useState("")
+  const [ teamMembers,setTeamMembers]=useState([])
+  const [inputValue, setInputValue] = useState('');
 
-    const [fieldControl,setFieldControl]=useState(false)
-    const [errorr,setError]=useState(false)
-    const [isLoading,setIsLoading]=useState(false)
+  const [fieldControl,setFieldControl]=useState(false)
+  const [errorr,setError]=useState(false)
+  const [isLoading,setIsLoading]=useState(false)
 
-    const falseDate = (date) => new Date() < date;
+  const falseDate = (date) => new Date() < date;
+
+  useEffect(()=>{
+    const getTask=async()=>{
+        try{
+            const {data}=await axios.get(`http://localhost:2000/project/${id}/task/${taskId}`)
+             setTitle(data.title)
+             setDesc(data.desc)
+             setStatus(data.status)
+             setDeadline(data.deadline)
+             setStartDate(data.startDate)
+             setTeamMembers(data.teamMembers)
+             setTaskImage(data.taskImage)
+        }catch(error){
+            console.log(error)
+        }
+    }
+      getTask()
+  },[id,taskId])
+
+ 
 
     const handleAddTeamMember = (event) => {
       if (event.key === 'Enter' && inputValue.trim()) {
@@ -41,21 +67,20 @@ function CreateProjects() {
     };
 
     const handleSubmit=async(e)=>{
-        const token=localStorage.getItem('token') 
         e.preventDefault()
         
         setError(false)
         setFieldControl(false)
         setIsLoading(true)
 
-        if(!title || !desc || !deadline || !startDate || !status || !projectImage){
+        if(!title || !desc || !deadline || !startDate || !status ){
           setFieldControl(true)
           setIsLoading(false)
           return
         }
         
         try{
-          const {data}= await axios.post('http://localhost:2000/project/',{title,desc,deadline,startDate,status,projectImage,teamMembers},{
+          const {data}= await axios.put(`http://localhost:2000/project/${id}/task/${taskId}`,{title,desc,deadline,startDate,status,taskImage,teamMembers},{
             headers:{Authorization:`Bearer ${token}`}
           })
           console.log(data)
@@ -64,13 +89,13 @@ function CreateProjects() {
           setDeadline(null)
           setStartDate(null)
           setStatus('')
-          setProjectImage('')
+          setTaskImage('')
           setTeamMembers([])
 
           setIsLoading(false)
           setError(false)
           
-         navigate('/')
+         navigate(`/projectdetail/${id}`)
 
         }catch(error){
           console.log(error)
@@ -83,19 +108,19 @@ function CreateProjects() {
     <div>
         <Navbar />
         <div className='flex flex-col items-center justify-center pt-16'>
-            <p className='text-3xl font-bold pb-7 text-green-700'>Create Project</p>
+            <p className='text-3xl font-bold pb-7 text-green-700'>Update Task</p>
             <form onSubmit={handleSubmit} className='w-[600px] flex flex-col gap-4 '>
               <div className='flex flex-col gap-1'>
-                <span className='text-lg font-semibold  '>Add Project title:</span>  
+                <span className='text-lg font-semibold  '>Add Task title:</span>  
                 <input value={title} onChange={(e)=>setTitle(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='Title...'/>
               </div>
               <div className='flex flex-col gap-1'>
-                <span className='text-lg font-semibold  '>Add Project description:</span>  
+                <span className='text-lg font-semibold  '>Add Task description:</span>  
                 <textarea value={desc} onChange={(e)=>setDesc(e.target.value)}  className='w-full h-28 border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='Description...'/>
               </div>
               <div className='w-full flex gap-3'>
                   <div className='flex flex-col gap-1 w-full'>
-                    <span className='text-lg font-semibold  '>Add Start Date:</span>  
+                    <span className='text-lg font-semibold  '>Add Task Date:</span>  
                     <DatePicker
                       selected={startDate}
                       onChange={(date)=>setStartDate(date)}
@@ -109,7 +134,7 @@ function CreateProjects() {
                     />     
                   </div>
                   <div className='flex flex-col max-md:flex gap-1 w-full'>
-                      <span className='text-lg font-semibold '>Add Deadline:</span>  
+                      <span className='text-lg font-semibold '>Add Task Deadline:</span>  
                       <DatePicker
                         selected={deadline}
                         onChange={(date)=>setDeadline(date)}
@@ -123,11 +148,23 @@ function CreateProjects() {
                       />     
                   </div>
               </div>
-              <div className='flex flex-col gap-1'>
-                <span className='text-lg font-semibold  '>Add Project Status:</span>  
-                <input value={status} onChange={(e)=>setStatus(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='add status in from 100%'/>
 
-              </div>            
+              {/* <div className='flex flex-col gap-1'>
+                <span className='text-lg font-semibold  '>Add Task Status:</span>  
+                <input value={status} onChange={(e)=>setStatus(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='add status in from 100%'/>
+              </div>   */}
+
+              <div className='flex flex-col gap-1'>
+                <span className='text-lg font-semibold  '>Add Task Status:</span> 
+                <select value={status} onChange={(e)=>setStatus(e.target.value)} className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='add status in from 100%'>
+                   <option value=''>Select Status</option>
+                    <option value='not-started'>Not-Started</option>
+                    <option value='pending'>Pending</option>
+                    <option value='in-progress'>In-Progress</option>
+                    <option value='completed'>Completed</option>
+
+                </select> 
+              </div>           
               
               <div className='flex flex-col gap-1'>
               <span className='text-lg font-semibold  '>Add Team Members:</span>  
@@ -161,22 +198,17 @@ function CreateProjects() {
                 </Box>
               </div> 
               <div className='flex flex-col gap-1'>
-                  <span className='text-lg font-semibold'>Add Project Image:</span>  
+                  <span className='text-lg font-semibold'>Add Task Image:</span>  
                   <FileBase 
                     type='file'
                     multiple={false}
-                    onDone={({base64})=>setProjectImage(base64)}
+                    onDone={({base64})=>setTaskImage(base64)}
                 />             
               </div> 
-               {/* <ChipInput
-                 label='tags'
-                 value={teamMembers}
-                 onAdd={(chip)=>{}}
-                 onDelete={(chip)=>{}}
-               /> */}
+               
 
                {isLoading && <div className='flex justify-center'><CircularProgress /></div>}
-              <button type='submit' className='bg-green-600 py-2 text-2xl font-serif font-semibold'>Create</button>
+              <button type='submit' className='bg-green-600 py-2 text-2xl  font-semibold'>Update</button>
               { fieldControl && <p className='text-red-600 text-center text-lg'>Enter all Fields</p>}
               { errorr && <p className='text-red-600 text-center text-lg'>sorry, failed try again!</p>}
             
@@ -187,4 +219,4 @@ function CreateProjects() {
   )
 }
 
-export default CreateProjects
+export default UpdateTask
