@@ -20,7 +20,9 @@ function CreateProjects() {
     const [status,setStatus]=useState('')
     const [projectImage,setProjectImage]=useState("")
     const [ teamMembers,setTeamMembers]=useState([])
+    const [ projectSchedule,setProjectSchedule]=useState([])
     const [inputValue, setInputValue] = useState('');
+    const [scheduleInputValue, setScheduleInputValue] = useState('');
 
     const [fieldControl,setFieldControl]=useState(false)
     const [errorr,setError]=useState(false)
@@ -40,6 +42,21 @@ function CreateProjects() {
       setTeamMembers((members) => members.filter((member) => member !== teamMemberToDelete));
     };
 
+    const handleAddSchedule = (event) => {
+      if (event.key === 'Enter' && scheduleInputValue.trim()) {
+        event.preventDefault();
+        setProjectSchedule([...projectSchedule, scheduleInputValue.trim()]);
+        setScheduleInputValue(''); // Clear input field after adding
+      }
+    };
+
+    const handleScheduleDelete = (scheduleToDelete) => {
+      setProjectSchedule((schedules) =>schedules.filter((schedule) => schedule !== scheduleToDelete));
+    };
+
+
+
+
     const handleSubmit=async(e)=>{
         const token=localStorage.getItem('token') 
         e.preventDefault()
@@ -55,7 +72,7 @@ function CreateProjects() {
         }
         
         try{
-          const {data}= await axios.post('http://localhost:2000/project/',{title,desc,deadline,startDate,status,projectImage,teamMembers},{
+          const {data}= await axios.post('http://localhost:2000/project/',{title,desc,deadline,startDate,status,projectImage,teamMembers,projectSchedule},{
             headers:{Authorization:`Bearer ${token}`}
           })
           console.log(data)
@@ -66,6 +83,7 @@ function CreateProjects() {
           setStatus('')
           setProjectImage('')
           setTeamMembers([])
+          setProjectSchedule([])
 
           setIsLoading(false)
           setError(false)
@@ -160,6 +178,40 @@ function CreateProjects() {
                     </Box>
                 </Box>
               </div> 
+
+
+              <div className='flex flex-col gap-1'>
+              <span className='text-lg font-semibold  '>Add Schedules:</span>  
+
+                <Box className='w-full'>
+                    <TextField
+                     className='w-full '
+                      value={scheduleInputValue}
+                      onChange={(e) => setScheduleInputValue(e.target.value)}
+                      onKeyDown={handleAddSchedule}
+                      variant="outlined"
+                      placeholder='add schedule'
+                      sx={{
+                        border: '2px solid #16a34a', 
+                        outline: 'none',
+                        '&:focus-within': {
+                          outline: '2px solid #06b6d4',
+                        },
+                      }}
+                    />
+                    <Box mt={2}>
+                      {projectSchedule.map((schedule, index) => (
+                        <Chip
+                          key={index}
+                          label={schedule}
+                          onDelete={() => handleScheduleDelete (schedule)}
+                          sx={{ marginRight: 1, marginBottom: 1 }}
+                        />
+                      ))}
+                    </Box>
+                </Box>
+              </div>
+
               <div className='flex flex-col gap-1'>
                   <span className='text-lg font-semibold'>Add Project Image:</span>  
                   <FileBase 

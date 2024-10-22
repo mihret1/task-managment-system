@@ -32,7 +32,9 @@ function UpdateProjects() {
     const [status,setStatus]=useState('')
     const [projectImage,setProjectImage]=useState("")
     const [ teamMembers,setTeamMembers]=useState([])
+    const [ projectSchedule,setProjectSchedule]=useState([])
 
+    const [scheduleInputValue, setScheduleInputValue] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [fieldControl,setFieldControl]=useState(false)
     const [errorr,setError]=useState(false)
@@ -52,6 +54,18 @@ function UpdateProjects() {
       setTeamMembers((members) => members.filter((member) => member !== teamMemberToDelete));
     };
 
+    const handleAddSchedule = (event) => {
+      if (event.key === 'Enter' && scheduleInputValue.trim()) {
+        event.preventDefault();
+        setProjectSchedule([...projectSchedule, scheduleInputValue.trim()]);
+        setScheduleInputValue(''); // Clear input field after adding
+      }
+    };
+
+    const handleScheduleDelete = (scheduleToDelete) => {
+      setProjectSchedule((schedules) =>schedules.filter((schedule) => schedule !== scheduleToDelete));
+    };
+
     const handleSubmit=async(e)=>{
         e.preventDefault()
         const token=localStorage.getItem('token') 
@@ -67,7 +81,7 @@ function UpdateProjects() {
         }
 
         try{
-          const {data}= await axios.put(`http://localhost:2000/project/${id}`,{title,desc,deadline,startDate,status,projectImage,teamMembers},
+          const {data}= await axios.put(`http://localhost:2000/project/${id}`,{title,desc,deadline,startDate,status,projectImage,teamMembers,projectSchedule},
             {
             headers:{Authorization:`Bearer ${token}`}
           })
@@ -102,6 +116,7 @@ function UpdateProjects() {
           setStartDate(data.startDate)
           setStatus(data.status)
           setTeamMembers(data.teamMembers || [])
+          setProjectSchedule(data.projectSchedule || [])
           setProjectImage(data.projectImage)
         }catch(error){
           console.log(error)
@@ -191,6 +206,39 @@ function UpdateProjects() {
                     </Box>
                 </Box>
               </div> 
+
+              <div className='flex flex-col gap-1'>
+              <span className='text-lg font-semibold  '>Add Schedules:</span>  
+
+                <Box className='w-full'>
+                    <TextField
+                     className='w-full '
+                      value={scheduleInputValue}
+                      onChange={(e) => setScheduleInputValue(e.target.value)}
+                      onKeyDown={handleAddSchedule}
+                      variant="outlined"
+                      placeholder='add schedule'
+                      sx={{
+                        border: '2px solid #16a34a', 
+                        outline: 'none',
+                        '&:focus-within': {
+                          outline: '2px solid #06b6d4',
+                        },
+                      }}
+                    />
+                    <Box mt={2}>
+                      {projectSchedule.map((schedule, index) => (
+                        <Chip
+                          key={index}
+                          label={schedule}
+                          onDelete={() => handleScheduleDelete (schedule)}
+                          sx={{ marginRight: 1, marginBottom: 1 }}
+                        />
+                      ))}
+                    </Box>
+                </Box>
+              </div>
+
               <div className='flex flex-col gap-1'>
                   <span className='text-lg font-semibold'>Update Project Image:</span>  
                   <FileBase 

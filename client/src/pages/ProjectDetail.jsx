@@ -7,6 +7,8 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import img1 from '../assets/p1.png'
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import { jwtDecode } from 'jwt-decode'
 
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -18,6 +20,9 @@ const ProjectDetailPage=()=>{
     const [tasks,setTasks]=useState(null)
     const [refresh,setRefresh]=useState(false)
     const token=localStorage.getItem('token')
+    const decode=jwtDecode(token)
+    const [scheduleCreate,setScheduleCreate]=useState(false)
+    
     const { id }=useParams()
     
     useEffect(()=>{
@@ -155,7 +160,12 @@ const ProjectDetailPage=()=>{
         <div className='flex'>
 
             <div className='shadow-lg flex flex-col justify-around gap-1 w-1/5 h-[500px] bg-black text-white text-xl '>
-                 <div className='p-3 h-full text-center  text-lg bg-[#21573c]'>{project?.title}</div>
+                 <div className='p-3 h-full text-center  text-lg bg-[#21573c] flex flex-col gap-3 items-center'>
+                    {project?.title}
+                   {(project?.creator === decode?.id )&& <a href={`/updateproject/${project?._id}`}  className=' border w-20 '>update</a>}
+                    {/* <a href={`/updateproject/${project.id}`}><BorderColorIcon color='primary' /></a> */}
+
+                  </div>
                  <button  onClick={()=>setDisplayControl(1)} className=' p-3 h-full bg-[#21573c]'>Discription</button>
                  <button onClick={()=>setDisplayControl(2)} className=' p-3 h-full bg-[#21573c]'>Tasks</button>
                  <button onClick={()=>setDisplayControl(3)} className=' p-3 h-full bg-[#21573c]'>Schedule</button>
@@ -164,6 +174,7 @@ const ProjectDetailPage=()=>{
             </div>
 
             <div  className='w-4/5  overflow-x-scroll overflow-y-auto h-[500px] px-6 py-4  ' style={{scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                 
                  {displayControl===1 && 
                     <div className='flex flex-col items-center px-[8%] py-8'>
                         <p className=' text-center text-2xl pb-3 font-semibold text-gray-600 '>{project?.title}</p>
@@ -182,6 +193,8 @@ const ProjectDetailPage=()=>{
                     </div>
                  }
                  
+
+
                  {displayControl===2 && 
 
                  <div className='grid grid-cols-3 gap-x-4 gap-y-5   '>
@@ -294,7 +307,29 @@ const ProjectDetailPage=()=>{
 
 
 
-                 {displayControl===3 && <div>schedule</div>}
+                 {displayControl===3 && 
+                   
+                     
+                     <div>
+                          <h1 className='text-3xl font-semibold text-center pt-2 text-green-800 font-serif'>Schedules </h1>
+                          <div>
+                            <p className='text-xl pt-2 font-semibold text-gray-500'><EventAvailableIcon sx={{ color:'green' }} /> Here are the Current Schedules</p>
+                              
+                            <div className='flex flex-col gap-1 pt-3'>
+                                  {project?.projectSchedule.map((item)=>(
+                                    <div className='text-lg font-semibold text-gray-700' key={item.key}>
+                                     - {item}
+                                    </div>
+                                    
+                                  ))}
+                            </div>
+                          </div>
+                    
+                    </div>
+                 
+                 }
+
+
                  {displayControl===4 && <div>issue</div>}
                  {displayControl===5 && <div>team</div>}
 

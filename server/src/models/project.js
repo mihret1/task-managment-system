@@ -34,15 +34,22 @@ const projectSchema= new mongoose.Schema({
         type: String,
         default:0
       },
+
+      teamMembers:{
+        type:[String],
+        default:[]
+        
+    },
+
+    projectTasks:{
+        type:[taskSchema],
+        default:[]
+    },
+    creator:String,
       
     projectIssue:{
             type:[String],
             default:[]
-    },
-    teamMembers:{
-        type:[String],
-        default:[]
-        
     },
     projectSchedule:{
         type:[String],
@@ -51,11 +58,7 @@ const projectSchema= new mongoose.Schema({
         
     },
 
-    projectTasks:{
-        type:[taskSchema],
-        default:[]
-    },
-    creator:String
+  
     // projectTask:[{
     //     type:mongoose.Schema.Types.ObjectId,
     //     default:[],
