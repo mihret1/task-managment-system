@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress'; // MUI Loading Sp
 import {useNavigate, useParams} from 'react-router-dom'
 import { TextField, Chip, Box } from '@mui/material';
 
+import emailjs from 'emailjs-com';
 
 function CreateTask() {
   const navigate=useNavigate()
@@ -41,6 +42,37 @@ function CreateTask() {
       setTeamMembers((members) => members.filter((member) => member !== teamMemberToDelete));
     };
 
+  const sendEmailToMultipleRecipients=(recipients, {title,startDate,deadline})=>{
+        const templateParams = {
+          to_email: recipients.join(', '), // Join multiple emails into a single string separated by commas
+          task_title: title,
+          task_startDate:startDate,
+          deadline:deadline,
+          from_name:'Task Managment System'
+        };
+
+        emailjs
+        .send(
+          'service_5xjudyb',   // Replace with your EmailJS service ID
+          'template_are47yh',  // Replace with your EmailJS template ID
+          templateParams,
+          'EhN2wmPgm4E7rWzdO'       // Replace with your EmailJS user ID
+        )
+        .then(
+          (response) => {
+            console.log('Email sent successfully', response.status, response.text);
+          },
+          (error) => {
+            console.log('Failed to send email', error);
+          }
+        );
+
+
+
+  }
+
+
+
     const handleSubmit=async(e)=>{
         const token=localStorage.getItem('token') 
         e.preventDefault()
@@ -59,7 +91,9 @@ function CreateTask() {
           const {data}= await axios.post(`http://localhost:2000/project/${id}/task`,{title,desc,deadline,startDate,status,taskImage,teamMembers},{
             headers:{Authorization:`Bearer ${token}`}
           })
-          console.log(data)
+          console.log('successefully created',data)
+           sendEmailToMultipleRecipients(teamMembers,{title,startDate,deadline})
+
           setTitle('')
           setDesc('')
           setDeadline(null)
@@ -71,7 +105,7 @@ function CreateTask() {
           setIsLoading(false)
           setError(false)
           
-         navigate(`/projectdetail/${id}`)
+        //  navigate(`/projectdetail/${id}`)
 
         }catch(error){
           console.log(error)
@@ -80,6 +114,9 @@ function CreateTask() {
         }
     }
   
+
+
+
   return (
     <div>
         <Navbar />
