@@ -164,7 +164,7 @@ const ProjectDetailPage=()=>{
           {
           headers:{Authorization:`Bearer ${token}`}
           })
-         setProjectIssue(data.projectIssue)
+        //  setProjectIssue(data.projectIssue)
          setIssue({desc:'',status:''})
          setRefresh((e)=>!e)
          console.log(data)
@@ -206,14 +206,12 @@ const ProjectDetailPage=()=>{
     if (issue.desc.trim() === '') return;
   
     try {
-      // Map over projectIssue array to update the issue with the same _id
       const updatedIssues = projectIssue?.map((iss) =>
         iss._id === issue._id
           ? { ...iss, desc: issue.desc, status: issue.status }
           : iss
       );
   
-      // Send updated issue array to backend
       const { data } = await axios.put(
         `http://localhost:2000/project/${id}`,
         { projectIssue: updatedIssues },
@@ -221,8 +219,8 @@ const ProjectDetailPage=()=>{
       );
   
       console.log('Issue updated successfully:', data);
-      setRefresh((e) => !e);  // Refresh the page or state
-      setProjectIssue(data.projectIssue)
+      setRefresh((e) => !e);  
+      // setProjectIssue(data.projectIssue)
       setIssue({desc:'',status:''})
 
   
@@ -230,6 +228,24 @@ const ProjectDetailPage=()=>{
       console.log('Error updating issue:', error);
     }
   };
+
+
+  const handleDeleteIsuue=async(issueId)=>{
+    if(!issueId) return
+    try{
+      const updatedIssues=projectIssue?.filter((item)=>item._id !== issueId)
+      const {data}=await axios.put(`http://localhost:2000/project/${id}`,{ projectIssue: updatedIssues },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setRefresh((e)=>!e)
+      console.log('Issue deleted successfully:',data)
+      
+    }catch(error){
+      console.log(error)
+    }
+
+  }
 
 
     return(
@@ -377,7 +393,7 @@ const ProjectDetailPage=()=>{
                                      <p className='text-lg text-gray-600'>{index+1}. {item.desc}</p>
                                       <span className={`${item.status==='In-Progress' && 'text-blue-500' } ${item.status==='Solved' && 'text-green-500' } ${item.status==='Difficult' && 'text-red-500' } ${item.status==='Issued' && 'text-yellow-500' }  p-2 w-32 font-bold `}>{item.status}</span>
                                       <div className='flex gap-10 pt-7'>
-                                         <button><DeleteIcon sx={{ color:'red' }} /></button>
+                                         <button onClick={()=>handleDeleteIsuue(item._id)}><DeleteIcon sx={{ color:'red' }} /></button>
                                          <button onClick={()=> handleUpdatIssueButton({item })}><EditIcon sx={{color:'blue'}}/> </button>
                                       </div>
                                     </div>
