@@ -10,10 +10,10 @@ import Button from '@mui/material/Button';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { jwtDecode } from 'jwt-decode'
 import Groups2Icon from '@mui/icons-material/Groups2';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 const ProjectDetailPage=()=>{
@@ -27,6 +27,7 @@ const ProjectDetailPage=()=>{
     const [projectIssue,setProjectIssue]=useState([])
     const [addIssueButton,setAddIssueButton]=useState(false)
     const { id }=useParams()
+    const [isUpdate,setIsUpdate]=useState(false)
     
     useEffect(()=>{
       const projectDetail=async()=>{
@@ -175,6 +176,62 @@ const ProjectDetailPage=()=>{
    }
 
 
+  const handleUpdatIssueButton=({item})=>{
+    setIsUpdate(true)
+    setAddIssueButton(true)
+    setIssue(item)
+    // console.log(item)
+    // console.log(issue)
+
+
+  }
+
+  //  const handleUpdateIssue=async({item})=>{
+  //   if (issue.desc.trim() === '') return;
+    
+  //    try{
+  //     // const id=item._id      
+  //     const updatedIssue=projectIssue?.map((iss)=>iss._id===item._id ? {...iss,desc:issue.desc,status:issue.status}:iss)
+
+  //     const { data }=await axios.put(`http://localhost:2000/project/${id}`,{projectIssue:updatedIssue},
+  //       {headers:{Authorization:`Bearer ${token}`}})
+  //       console.log(data)
+  //       setRefresh((e)=>!e)
+
+  //     }catch(error){
+  //     console.log(error)
+  //    }
+  //  }
+  const handleUpdateIssue = async () => {
+    if (issue.desc.trim() === '') return;
+  
+    try {
+      // Map over projectIssue array to update the issue with the same _id
+      const updatedIssues = projectIssue?.map((iss) =>
+        iss._id === issue._id
+          ? { ...iss, desc: issue.desc, status: issue.status }
+          : iss
+      );
+  
+      // Send updated issue array to backend
+      const { data } = await axios.put(
+        `http://localhost:2000/project/${id}`,
+        { projectIssue: updatedIssues },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      console.log('Issue updated successfully:', data);
+      setRefresh((e) => !e);  // Refresh the page or state
+      setProjectIssue(data.projectIssue)
+      setIssue({desc:'',status:''})
+
+  
+    } catch (error) {
+      console.log('Error updating issue:', error);
+    }
+  };
+
+
     return(
     <div>
         <Navbar />
@@ -194,7 +251,7 @@ const ProjectDetailPage=()=>{
                  <button onClick={()=>setDisplayControl(5)} className=' p-3 h-full bg-[#21573c]'>Teams</button>
             </div>
 
-            <div  className='w-4/5  overflow-x-scroll overflow-y-auto h-[500px] px-6 py-4  ' style={{scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div  className={`w-4/5   overflow-x-scroll overflow-y-auto h-[500px] px-6 py-4  ${displayControl===2 && 'bg-[#448b68]'} `} style={{scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                  
                  {displayControl===1 && 
                     <div className='flex flex-col items-center px-[8%] py-8'>
@@ -219,7 +276,7 @@ const ProjectDetailPage=()=>{
                  {displayControl===2 && 
 
                  <div className='grid grid-cols-3 gap-x-4 gap-y-5   '>
-                    <div className='border-b-2 pb-3 '> <a href={`/createtask/${project._id}`}className='text-lg text-green-700  font-bold' >Add new Task +</a></div>
+                    <div className='border-b-2 pb-3 '> <a href={`/createtask/${project._id}`}className='text-lg text-white  font-bold' >Add new Task +</a></div>
                     <div className='border-b-2'></div>
                     <div className='border-b-2'></div>
 
@@ -241,74 +298,7 @@ const ProjectDetailPage=()=>{
 
 
 
-                 <TaskCard
-                     title='Graphics design' 
-                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
-                     progress='20'
-                     startDate='2/23/2021'
-                     deadline='11/5/024'
-                     teamMemeber='Mihlet2@gmail.com'
-                     status='10'
-                     images={img1}
-                   
-                   />
-
-                    {/* <TaskCard
-                     title='Graphics design' 
-                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
-                     progress='20'
-                     startDate='2/23/2021'
-                     deadline='11/5/024'
-                     teamMemeber='Mihlet2@gmail.com'
-                     status='10'
-                     images={img1}
-                   
-                   />
-                   <TaskCard
-                     title='Graphics design' 
-                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
-                     progress='20'
-                     startDate='2/23/2021'
-                     deadline='11/5/024'
-                     teamMemeber='Mihlet2@gmail.com'
-                     status='10'
-                     images={img1}
-                   
-                   />
-
-                <TaskCard
-                     title='Graphics design' 
-                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
-                     progress='20'
-                     startDate='2/23/2021'
-                     deadline='11/5/024'
-                     teamMemeber='Mihlet2@gmail.com'
-                     status='10'
-                     images={img1}
-                   
-                   />
-                   <TaskCard
-                     title='Graphics design' 
-                     desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                      Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
-                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
-                     progress='20'
-                     startDate='2/23/2021'
-                     deadline='11/5/024'
-                     teamMemeber='Mihlet2@gmail.com'
-                     status='10'
-                     images={img1}
-                   
-                   />
-                   <TaskCard
+                 {/* <TaskCard
                      title='Graphics design' 
                      desc='Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                       Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, 
@@ -321,6 +311,11 @@ const ProjectDetailPage=()=>{
                      images={img1}
                    
                    /> */}
+
+                   
+
+               
+                  
 
                 </div>
                 }
@@ -354,9 +349,9 @@ const ProjectDetailPage=()=>{
                    
                    <div className='flex flex-col gap-3'>
                         <h1 className='text-2xl font-semibold font-serif text-green-700 pb-6'>This are Issues of the Projects</h1>
-                        <button onClick={()=>setAddIssueButton((e)=>!e)} className='text-lg w-[100px] text-green-700 font-bold'>Add Issue +</button>  
+                        <button onClick={()=>{setAddIssueButton((e)=>!e),setIsUpdate(false),setIssue({desc:'',status:''})}} className='text-lg w-[100px] text-green-700 font-bold'>Add Issue +</button>  
                         
-                        {addIssueButton && <div className='flex flex-col gap-2 w-[500px]'>
+                        {(addIssueButton ) && <div className='flex flex-col gap-2 w-[500px]'>
                             <span className='text-lg text-gray-500 font-semibold' >Enter the Issue</span>
                             <textarea value={issue.desc} onChange={(e)=>setIssue({...issue,desc:e.target.value})} placeholder='The issue description...' className='border p-2 border-green-600 w-[450px] h-[120px] outline-none'/>
                             
@@ -370,8 +365,10 @@ const ProjectDetailPage=()=>{
 
 
                             </select>
-                            <button onClick={()=>handleAddIssue()} className='bg-green-700 px-2 py-1 text-white text-lg'>Add</button>
+                            <button onClick={()=>isUpdate? handleUpdateIssue(): handleAddIssue()} className='bg-green-700 px-2 py-1 text-white text-lg'>Add</button>
                         </div>}
+
+
                        
                         <p className='text-2xl text-gray-700 pt-5 '>Here is the issue raise in this project</p> 
                           <div>
@@ -379,6 +376,10 @@ const ProjectDetailPage=()=>{
                                   <div className='flex flex-col justify-between w-[800px]  border-t-2 p-3 rounded-lg' key={item.key}>
                                      <p className='text-lg text-gray-600'>{index+1}. {item.desc}</p>
                                       <span className={`${item.status==='In-Progress' && 'text-blue-500' } ${item.status==='Solved' && 'text-green-500' } ${item.status==='Difficult' && 'text-red-500' } ${item.status==='Issued' && 'text-yellow-500' }  p-2 w-32 font-bold `}>{item.status}</span>
+                                      <div className='flex gap-10 pt-7'>
+                                         <button><DeleteIcon sx={{ color:'red' }} /></button>
+                                         <button onClick={()=> handleUpdatIssueButton({item })}><EditIcon sx={{color:'blue'}}/> </button>
+                                      </div>
                                     </div>
                                 ))}
                           </div> 

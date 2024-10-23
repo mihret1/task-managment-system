@@ -40,13 +40,15 @@ const projectSchema= new mongoose.Schema({
         default:[]
         
     },
+    
 
     projectTasks:{
         type:[taskSchema],
         default:[]
     },
     creator:String,
-    
+
+
       
     projectIssue:{
             type:[{
