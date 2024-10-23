@@ -24,6 +24,8 @@ const taskSchema=new mongoose.Schema({
        },{timestamps:true})
 
 
+
+
 const projectSchema= new mongoose.Schema({
     title:String,
     desc:String,
@@ -40,7 +42,7 @@ const projectSchema= new mongoose.Schema({
         default:[]
         
     },
-    
+
 
     projectTasks:{
         type:[taskSchema],
@@ -56,7 +58,7 @@ const projectSchema= new mongoose.Schema({
                 status:{
                     type:String,
                     default:'issued',
-                    enum: ['solved', 'issued', 'pending'], 
+                    // enum: ['solved', 'issued', 'pending'], 
                         }
                     }],
             default:[]

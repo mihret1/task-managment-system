@@ -240,10 +240,11 @@ const ProjectDetailPage=()=>{
 
       setRefresh((e)=>!e)
       console.log('Issue deleted successfully:',data)
-      
+
     }catch(error){
       console.log(error)
     }
+    
 
   }
 

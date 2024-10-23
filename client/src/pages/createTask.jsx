@@ -88,7 +88,7 @@ function CreateTask() {
             <form onSubmit={handleSubmit} className='w-[600px] flex flex-col gap-4 '>
               <div className='flex flex-col gap-1'>
                 <span className='text-lg font-semibold  '>Add Task title:</span>  
-                <input value={title} onChange={(e)=>setTitle(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='Title...'/>
+                <input  value={title} onChange={(e)=>setTitle(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='Title...'/>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-lg font-semibold  '>Add Task description:</span>  
