@@ -45,7 +45,7 @@ function CreateTask() {
   const sendTaskNotification=(recipients, {title,startDate,deadline})=>{
         const templateParams = {
           to_email: recipients.join(', '), // Join multiple emails into a single string separated by commas
-          task_title: title,
+          task_title:` task title is ${title}`,
           task_startDate:startDate,
           deadline:deadline,
           from_name:'Task Managment System'
