@@ -5,9 +5,10 @@ import Navbar from '../components/Navbar';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
-import CircularProgress from '@mui/material/CircularProgress'; // MUI Loading Spinner
+import CircularProgress from '@mui/material/CircularProgress'; 
 import {useNavigate} from 'react-router-dom'
 import { TextField, Chip, Box } from '@mui/material';
+import emailjs from 'emailjs-com';
 
 
 function CreateProjects() {
@@ -55,6 +56,34 @@ function CreateProjects() {
     };
 
 
+    const sendProjectNotification=(recipients, {title,startDate,deadline})=>{
+      const templateParams = {
+        to_email: recipients.join(', '), 
+        task_title: title,
+        task_startDate:startDate,
+        deadline:deadline,
+        from_name:'Task Managment System'
+      };
+
+      emailjs
+      .send(
+        'service_5xjudyb',   
+        'template_are47yh',  
+        templateParams,
+        'EhN2wmPgm4E7rWzdO'   
+      )
+      .then(
+        (response) => {
+          console.log('Email sent successfully', response.status, response.text);
+        },
+        (error) => {
+          console.log('Failed to send email', error);
+        }
+      );
+
+
+
+}
 
 
     const handleSubmit=async(e)=>{
@@ -65,7 +94,7 @@ function CreateProjects() {
         setFieldControl(false)
         setIsLoading(true)
 
-        if(!title || !desc || !deadline || !startDate || !status || !projectImage){
+        if(!title || !desc || !deadline || !startDate || !status || !projectImage || !teamMembers){
           setFieldControl(true)
           setIsLoading(false)
           return
@@ -76,6 +105,8 @@ function CreateProjects() {
             headers:{Authorization:`Bearer ${token}`}
           })
           console.log(data)
+          sendProjectNotification(teamMembers,{title,startDate,deadline})
+
           setTitle('')
           setDesc('')
           setDeadline(null)
@@ -152,7 +183,7 @@ function CreateProjects() {
 
                 <Box className='w-full'>
                     <TextField
-                     className='w-full '
+                       className='w-full '
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleAddTeamMember}

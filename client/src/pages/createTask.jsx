@@ -42,7 +42,7 @@ function CreateTask() {
       setTeamMembers((members) => members.filter((member) => member !== teamMemberToDelete));
     };
 
-  const sendEmailToMultipleRecipients=(recipients, {title,startDate,deadline})=>{
+  const sendTaskNotification=(recipients, {title,startDate,deadline})=>{
         const templateParams = {
           to_email: recipients.join(', '), // Join multiple emails into a single string separated by commas
           task_title: title,
@@ -81,7 +81,7 @@ function CreateTask() {
         setFieldControl(false)
         setIsLoading(true)
 
-        if(!title || !desc || !deadline || !startDate || !status ){
+        if(!title || !desc || !deadline || !startDate || !status || !teamMembers ){
           setFieldControl(true)
           setIsLoading(false)
           return
@@ -92,8 +92,9 @@ function CreateTask() {
             headers:{Authorization:`Bearer ${token}`}
           })
           console.log('successefully created',data)
-           sendEmailToMultipleRecipients(teamMembers,{title,startDate,deadline})
 
+          sendTaskNotification(teamMembers,{title,startDate,deadline})
+                
           setTitle('')
           setDesc('')
           setDeadline(null)
@@ -185,6 +186,7 @@ function CreateTask() {
                 <Box className='w-full'>
                     <TextField
                      className='w-full '
+                     
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleAddTeamMember}
