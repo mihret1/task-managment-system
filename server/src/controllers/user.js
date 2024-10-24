@@ -6,7 +6,7 @@ const Signup=async(req,res)=>{
     try{
         const {email,name,password}=req.body
         const userExist=await User.findOne({email})
-        if(userExist) return res.status(400).send('email dont already exist')
+        if(userExist) return res.status(400).send('email  already exist')
 
         const salt= await bcrypt.genSalt(10)
         const hashedPassword=await bcrypt.hash(password,salt)
@@ -27,7 +27,7 @@ const Login=async(req,res)=>{
     try{
          const {email,password}=req.body
          const user=await User.findOne({email})
-         if(!user) return res.status(400).send('email dont exist')
+         if(!user) return res.status(400).send('email does not exist')
 
         const matched=await bcrypt.compare( password,user.password )
         if(!matched) return res.status(400).send('password or email not correct')

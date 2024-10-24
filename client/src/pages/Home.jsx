@@ -43,7 +43,7 @@ function Home() {
 
   const CardOne=(props)=>{
     return(
-      <div className=' w-[400px] shadow-lg flex flex-col rounded-lg '>
+      <div className=' w-[400px]   max-xs:w-[340px] sm:max-md:w-[500px] md:max-lg:w-[360px] shadow-lg flex flex-col rounded-lg '>
             
            <a href={`/projectdetail/${props.idd}`} className='w-full'><img src={props.imgg} className='w-full rounded-t-xl h-[220px]'/></a>
            <div className='flex flex-col gap-4  p-5' >
@@ -72,7 +72,7 @@ function Home() {
        <Navbar />
 
 
-      <div className='grid grid-cols-3 max-md:grid-cols-1 md:max-lg:grid-cols-2  gap-x-4 gap-y-16 px-10 py-4'>
+      <div className='grid grid-cols-3 max-md:grid-cols-1 md:max-lg:grid-cols-2 justify-start items-center place-items-center  gap-x-4 gap-y-16 px-10 max-lg:px-2 py-4'>
            {projects.map((item)=>(
              <CardOne 
              key={item.key} 
