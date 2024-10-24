@@ -130,7 +130,7 @@ function UpdateProjects() {
         <Navbar />
         <div className='flex flex-col items-center justify-center pt-16'>
             <p className='text-3xl font-bold pb-7 text-green-700'>Update Project</p>
-            <form onSubmit={handleSubmit} className='w-[600px] flex flex-col gap-4 '>
+            <form onSubmit={handleSubmit} className='w-[600px] max-xs:w-[340px]  xs:max-sm:w-[435px]  flex flex-col gap-4 '>
               <div className='flex flex-col gap-1'>
                 <span className='text-lg font-semibold  '>Update Project title:</span>  
                 <input value={title} onChange={(e)=>setTitle(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='Title...'/>

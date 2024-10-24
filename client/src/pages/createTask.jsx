@@ -27,6 +27,8 @@ function CreateTask() {
     const [fieldControl,setFieldControl]=useState(false)
     const [errorr,setError]=useState(false)
     const [isLoading,setIsLoading]=useState(false)
+    const [emailError,setEmailError]=useState(false)
+
 
     const falseDate = (date) => new Date() < date;
 
@@ -51,7 +53,7 @@ function CreateTask() {
           from_name:'Task Managment System'
         };
 
-        emailjs
+         emailjs
         .send(
           'service_5xjudyb',   // Replace with your EmailJS service ID
           'template_are47yh',  // Replace with your EmailJS template ID
@@ -61,8 +63,11 @@ function CreateTask() {
         .then(
           (response) => {
             console.log('Email sent successfully', response.status, response.text);
+            setEmailError(false)
           },
           (error) => {
+            setEmailError(true)
+            // console.log(emailError)
             console.log('Failed to send email', error);
           }
         );
@@ -78,6 +83,7 @@ function CreateTask() {
         e.preventDefault()
         
         setError(false)
+        setEmailError(false)
         setFieldControl(false)
         setIsLoading(true)
 
@@ -105,8 +111,7 @@ function CreateTask() {
 
           setIsLoading(false)
           setError(false)
-          
-        //  navigate(`/projectdetail/${id}`)
+         navigate(`/projectdetail/${id}`)
 
         }catch(error){
           console.log(error)
@@ -123,7 +128,7 @@ function CreateTask() {
         <Navbar />
         <div className='flex flex-col items-center justify-center pt-16'>
             <p className='text-3xl font-bold pb-7 text-green-700'>Create Task</p>
-            <form onSubmit={handleSubmit} className='w-[600px] flex flex-col gap-4 '>
+            <form onSubmit={handleSubmit} className='w-[600px] max-xs:w-[340px]  xs:max-sm:w-[435px]  flex flex-col gap-4 '>
               <div className='flex flex-col gap-1'>
                 <span className='text-lg font-semibold  '>Add Task title:</span>  
                 <input  value={title} onChange={(e)=>setTitle(e.target.value)}  className='w-full border-2 border-green-600 py-2 px-2 outline-cyan-500 ' type='text' placeholder='Title...'/>
@@ -226,7 +231,8 @@ function CreateTask() {
               <button type='submit' className='bg-green-600 py-2 text-2xl  font-semibold'>Create</button>
               { fieldControl && <p className='text-red-600 text-center text-lg'>Enter all Fields</p>}
               { errorr && <p className='text-red-600 text-center text-lg'>sorry, failed try again!</p>}
-            
+              { emailError && <p className='text-red-600 text-center text-lg'>Email not send, there is email error</p>}
+
             </form>
         </div>
        
